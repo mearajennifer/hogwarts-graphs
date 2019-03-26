@@ -63,6 +63,7 @@ class Graph():
     def are_connected(self, node1, node2):
         """
         Returns True if two nodes are connected and False if they are not.
+        Breadth-first search.
         """
         to_visit = []
         seen = set()
@@ -80,44 +81,77 @@ class Graph():
                     seen.add(connection)
         return False
 
+    def are_connected_rec(self, node1, node2):
+        """
+        Returns True if two nodes are connected and False if they are not.
+        Recursive search.
+        """
+        pass
 
+    def is_well_formed(self):
+        """
+        Verifies that all node connections in an undirected graph are
+        bi-directional.
+        """
+        for node in self.nodes:
+            for connection in node.adjacent:
+                if node not in connection.adjacent:
+                    return False
+        return True
+
+
+# set up graph, nodes, and connections
+hogwarts = Graph()
+
+# group one
 harry = Node('Harry')
 hermione = Node('Hermione')
 ron = Node('Ron')
+lavender = Node('Lavender')
 
-hogwarts = Graph()
 hogwarts.add_node(harry)
 hogwarts.add_node(hermione)
 hogwarts.add_node(ron)
+hogwarts.add_node(lavender)
 
 hogwarts.add_connection(harry, hermione)
 hogwarts.add_connection(harry, ron)
 hogwarts.add_connection(hermione, ron)
+hogwarts.add_connection(ron, lavender)
 
+# group two
 nick = Node('Nearly Headless Nick')
 baron = Node('Bloody Baron')
 lady = Node('Grey Lady')
-friar = Node('Fat Friar')
 myrtle = Node('Moaning Myrtle')
 
 hogwarts.add_node(nick)
 hogwarts.add_node(baron)
 hogwarts.add_node(lady)
-hogwarts.add_node(friar)
 
 hogwarts.add_connection(nick, baron)
 hogwarts.add_connection(nick, lady)
-hogwarts.add_connection(nick, friar)
 hogwarts.add_connection(baron, lady)
-hogwarts.add_connection(baron, friar)
-hogwarts.add_connection(lady, friar)
 hogwarts.add_connection(lady, myrtle)
 
-print('\n')
+# call graph methods
 hogwarts.print_groups()
-print('\n')
+
 if hogwarts.are_connected(nick, myrtle):
     print(f'{nick} and {myrtle} are connected!')
 else:
     print(f'{nick} and {myrtle} aren\'t connected.')
+
+if hogwarts.are_connected(lady, hermione):
+    print(f'{lady} and {hermione} are connected!')
+else:
+    print(f'{lady} and {hermione} aren\'t connected.')
+
+if hogwarts.is_well_formed():
+    print('Hogwarts is a well-formed graph!')
+else:
+    print('Hogwarts is not a well-formed graph.')
+
+
+
 
